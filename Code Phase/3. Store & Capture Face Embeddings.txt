@@ -1,0 +1,29 @@
+import pickle
+
+# Load or Create Face Database
+try:
+    with open("face_db.pkl", "rb") as f:
+        face_db = pickle.load(f)
+except FileNotFoundError:
+    face_db = {}
+
+def register_face(name, embedding):
+    """Register a new user"""
+    face_db[name] = embedding
+    with open("face_db.pkl", "wb") as f:
+        pickle.dump(face_db, f)
+    print(f"Face registered for {name}!")
+
+def recognize_face(embedding):
+    """Match face embedding with the database"""
+    if not face_db:
+        return "No faces registered"
+    
+    min_dist = float("inf")
+    match_name = "Unknown"
+    for name, stored_embedding in face_db.items():
+        dist = np.linalg.norm(stored_embedding - embedding)  # Euclidean Distance
+        if dist < min_dist and dist < 0.6:  # Threshold for recognition
+            min_dist = dist
+            match_name = name
+    return match_name

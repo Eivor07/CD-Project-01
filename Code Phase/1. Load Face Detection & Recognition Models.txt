@@ -1,0 +1,11 @@
+import cv2
+import torch
+import numpy as np
+from facenet_pytorch import MTCNN, InceptionResnetV1
+
+# Load Face Detection and Recognition Models
+mtcnn = MTCNN(keep_all=True)  # Face detection
+face_model = InceptionResnetV1(pretrained='vggface2').eval()  # Face recognition
+
+# Initialize Camera
+cap = cv2.VideoCapture(0)

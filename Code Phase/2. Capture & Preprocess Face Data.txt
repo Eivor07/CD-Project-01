@@ -1,0 +1,10 @@
+def get_face_embedding(frame):
+    faces, _ = mtcnn.detect(frame)  # Detect faces
+    if faces is not None:
+        x, y, w, h = [int(i) for i in faces[0]]  # Extract face coordinates
+        face = frame[y:h, x:w]  # Crop face
+        face = cv2.resize(face, (160, 160))  # Resize
+        face = torch.tensor(face).permute(2, 0, 1).float().unsqueeze(0) / 255.0
+        embedding = face_model(face).detach().numpy()[0]  # Get 128D embedding
+        return embedding
+    return None

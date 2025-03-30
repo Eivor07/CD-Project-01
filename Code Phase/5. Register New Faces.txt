@@ -1,0 +1,4 @@
+ret, frame = cap.read()
+embedding = get_face_embedding(frame)
+if embedding is not None:
+    register_face("Your_Name", embedding)
